@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuneAPI", "RuneAPI\RuneAPI.csproj", "{5D580FA4-6028-4019-9095-8AC9212CFFDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RuneDataToCode", "RuneDataToCode\RuneDataToCode.csproj", "{FC9C8109-F253-47AC-9AFB-8510D97C5F6C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D580FA4-6028-4019-9095-8AC9212CFFDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D580FA4-6028-4019-9095-8AC9212CFFDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D580FA4-6028-4019-9095-8AC9212CFFDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D580FA4-6028-4019-9095-8AC9212CFFDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC9C8109-F253-47AC-9AFB-8510D97C5F6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC9C8109-F253-47AC-9AFB-8510D97C5F6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC9C8109-F253-47AC-9AFB-8510D97C5F6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC9C8109-F253-47AC-9AFB-8510D97C5F6C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {35804C41-9C6A-4D2F-B648-26F2CA6347C3}
+	EndGlobalSection
+EndGlobal
