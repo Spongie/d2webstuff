@@ -7,8 +7,10 @@ namespace RuneAPI.Models
 {
     public class Runeword
     {
+        public int Id { get; set; }
         public string Name { get; set; }
-        public Modifier[] Modifiers { get; set; }
-        public Rune[] Runes { get; set; }
+        public ICollection<Modifier> Modifiers { get; set; }
+        public virtual ICollection<Rune> Runes { get; set; }
+        public ItemType TargetTypes { get; set; }
     }
 }

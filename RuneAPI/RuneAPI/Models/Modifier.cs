@@ -2,13 +2,15 @@
 {
     public class Modifier
     {
-        public string FormatString { get; set; }
-        public int MinValue { get; set; }
-        public int MaxValue { get; set; }
-        
-        public string toFormattedString()
+        public int Id { get; set; }
+        public string Text { get; set; }
+
+        public static implicit operator Modifier(string stringValue)
         {
-            return string.Format(FormatString, MinValue, MaxValue);
+            return new Modifier
+            {
+                Text = stringValue
+            };
         }
     }
 }
