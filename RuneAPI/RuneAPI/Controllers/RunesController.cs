@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using RuneAPI.Database;
 using RuneAPI.Models;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RuneAPI.Controllers
@@ -21,7 +22,7 @@ namespace RuneAPI.Controllers
         [HttpGet]
         public IEnumerable<Rune> Get()
         {
-            return database.Runes;
+            return database.Runes.OrderBy(r => r.Number);
         }
     }
 }

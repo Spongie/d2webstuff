@@ -16,6 +16,8 @@ namespace RuneAPI.Controllers
             this.database = database;
         }
 
+        [HttpGet]
+        [Route("[controller]")]
         public IEnumerable<Runeword> GetAll()
         {
             var runes = database.Runes;

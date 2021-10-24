@@ -7,6 +7,6 @@ namespace RuneAPI.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int Number { get; set; }
-        //public ICollection<RunewordRune> Runewords { get; set; }
+        public string ImagePath { get; set; }
     }
 }
