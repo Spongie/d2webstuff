@@ -1,15 +1,15 @@
-import './App.css';
+
 import RuneFileViewer from './components/RuneFileViewer';
 import AdminComponent from './components/AdminComponent';
 import React from 'react';
 import { Route } from "react-router";
-import { ROUTE } from './models/routes';
+import { ROUTE } from './models/Routes';
 import RunewordComponent from './components/RunewordComponent';
 
 
 function App() {
   return (
-    <div className="App">
+    <div>
       <Route path={ROUTE.HOME}>
         <RunewordComponent />
       </Route>

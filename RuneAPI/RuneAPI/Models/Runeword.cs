@@ -7,10 +7,18 @@ namespace RuneAPI.Models
 {
     public class Runeword
     {
-        public int Id { get; set; }
+        public Runeword()
+        {
+            Modifiers = new HashSet<Modifier>();
+            RunewordRunes = new HashSet<RunewordRune>();
+        }
+
+        public long Id { get; set; }
         public string Name { get; set; }
-        public ICollection<Modifier> Modifiers { get; set; }
-        public virtual ICollection<Rune> Runes { get; set; }
-        public ItemType TargetTypes { get; set; }
+        public long TargetTypes { get; set; }
+        public long RequiredLevel { get; set; }
+
+        public virtual ICollection<Modifier> Modifiers { get; set; }
+        public virtual ICollection<RunewordRune> RunewordRunes { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { Rune } from "../models/rune";
-import httpcommon from "../util/httpcommon";
+import { Rune } from "../models/Rune";
+import Httpcommon from "../util/httpcommon";
 
 interface RunelistProps {
     chunksize: number
@@ -15,9 +15,9 @@ const RunelistComponent: React.FC<RunelistProps> = (props: RunelistProps) => {
     }, []);
 
     const fetchRunes = async () => {
-        const response = await httpcommon.get<Array<Rune>>('http://localhost:5000/Runes');
+        const response = await Httpcommon.get<Array<Rune>>('Runes');
 
-        setRunes(response.data);
+        setRunes(response);
     }
 
     let chunks: Array<Array<Rune>> = [];

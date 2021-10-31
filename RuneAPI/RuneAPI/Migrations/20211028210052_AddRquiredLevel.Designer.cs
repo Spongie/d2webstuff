@@ -9,8 +9,8 @@ using RuneAPI.Database;
 namespace RuneAPI.Migrations
 {
     [DbContext(typeof(RuneDbContext))]
-    [Migration("20211023121301_Initial")]
-    partial class Initial
+    [Migration("20211028210052_AddRquiredLevel")]
+    partial class AddRquiredLevel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,11 +20,11 @@ namespace RuneAPI.Migrations
 
             modelBuilder.Entity("RuneAPI.Models.Modifier", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("RunewordId")
+                    b.Property<long?>("RunewordId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Text")
@@ -32,21 +32,24 @@ namespace RuneAPI.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("RunewordId");
+                    b.HasIndex(new[] { "RunewordId" }, "IX_Modifier_RunewordId");
 
-                    b.ToTable("Modifier");
+                    b.ToTable("Modifiers");
                 });
 
             modelBuilder.Entity("RuneAPI.Models.Rune", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Number")
+                    b.Property<long>("Number")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -56,58 +59,79 @@ namespace RuneAPI.Migrations
 
             modelBuilder.Entity("RuneAPI.Models.Runeword", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<long>("RequiredLevel")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("TargetTypes")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.ToTable("Runewords");
                 });
 
-            modelBuilder.Entity("RuneRuneword", b =>
+            modelBuilder.Entity("RuneAPI.Models.RunewordRune", b =>
                 {
-                    b.Property<int>("RUNEWORDSId")
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("RunesId")
+                    b.Property<long?>("RuneId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("RUNEWORDSId", "RunesId");
+                    b.Property<long?>("RunewordId")
+                        .HasColumnType("INTEGER");
 
-                    b.HasIndex("RunesId");
+                    b.HasKey("Id");
 
-                    b.ToTable("RuneRuneword");
+                    b.HasIndex("RuneId");
+
+                    b.HasIndex("RunewordId");
+
+                    b.ToTable("RunewordRunes");
                 });
 
             modelBuilder.Entity("RuneAPI.Models.Modifier", b =>
                 {
-                    b.HasOne("RuneAPI.Models.Runeword", null)
+                    b.HasOne("RuneAPI.Models.Runeword", "Runeword")
                         .WithMany("Modifiers")
                         .HasForeignKey("RunewordId");
+
+                    b.Navigation("Runeword");
                 });
 
-            modelBuilder.Entity("RuneRuneword", b =>
+            modelBuilder.Entity("RuneAPI.Models.RunewordRune", b =>
                 {
-                    b.HasOne("RuneAPI.Models.Runeword", null)
-                        .WithMany()
-                        .HasForeignKey("RUNEWORDSId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("RuneAPI.Models.Rune", "Rune")
+                        .WithMany("RunewordRunes")
+                        .HasForeignKey("RuneId");
 
-                    b.HasOne("RuneAPI.Models.Rune", null)
-                        .WithMany()
-                        .HasForeignKey("RunesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("RuneAPI.Models.Runeword", "Runeword")
+                        .WithMany("RunewordRunes")
+                        .HasForeignKey("RunewordId");
+
+                    b.Navigation("Rune");
+
+                    b.Navigation("Runeword");
+                });
+
+            modelBuilder.Entity("RuneAPI.Models.Rune", b =>
+                {
+                    b.Navigation("RunewordRunes");
                 });
 
             modelBuilder.Entity("RuneAPI.Models.Runeword", b =>
                 {
                     b.Navigation("Modifiers");
+
+                    b.Navigation("RunewordRunes");
                 });
 #pragma warning restore 612, 618
         }

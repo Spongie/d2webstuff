@@ -1,8 +1,23 @@
-import axios from "axios";
+export default class HttpCommon {
+    static async get<T>(url: string): Promise<T> {
+        const response = await fetch(url);
+        const data = await response.json();
 
-export default axios.create({
-    baseURL: "http://localhost:5000/",
-    headers: {
-        "Content-type": "application/json"
+        return data;
     }
-});
+
+    static async post<T>(url: string, data: T) {
+        console.log(JSON.stringify(data));
+
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': '*/*',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        return await response.json();
+    }
+}

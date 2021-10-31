@@ -1,4 +1,4 @@
-export interface Rune {
+export type Rune = {
     id: number,
     name: string,
     number: number

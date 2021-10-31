@@ -27,7 +27,7 @@ namespace RuneAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<RuneDbContext>();
+            services.AddScoped<RuneDbContext>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RuneAPI", Version = "v1" });

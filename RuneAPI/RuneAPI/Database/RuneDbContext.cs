@@ -9,23 +9,40 @@ namespace RuneAPI.Database
 {
     public class RuneDbContext : DbContext
     {
-        public DbSet<Rune> Runes { get; set; }
-        public DbSet<Runeword> Runewords { get; set; }
+        public virtual DbSet<Modifier> Modifiers { get; set; }
+        public virtual DbSet<Rune> Runes { get; set; }
+        public virtual DbSet<Runeword> Runewords { get; set; }
+        public virtual DbSet<RunewordRune> RunewordRunes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            string dbPath = Environment.GetEnvironmentVariable("SQLITE_DB_PATH");
-
-            if (string.IsNullOrWhiteSpace(dbPath))
+            if (!optionsBuilder.IsConfigured)
             {
-                dbPath = "runes.db";
+                optionsBuilder.UseSqlite("DataSource=runes.db;");
             }
-
-            optionsBuilder.UseSqlite($"DataSource={dbPath}");
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Runeword>().HasMany(r => r.Runes).WithMany("RUNEWORDS");
+            modelBuilder.Entity<Modifier>(entity =>
+            {
+                entity.HasIndex(e => e.RunewordId, "IX_Modifier_RunewordId");
+
+                entity.HasOne(d => d.Runeword)
+                    .WithMany(p => p.Modifiers)
+                    .HasForeignKey(d => d.RunewordId);
+            });
+
+            modelBuilder.Entity<RunewordRune>(entity =>
+            {
+                entity.HasOne(d => d.Rune)
+                    .WithMany(p => p.RunewordRunes)
+                    .HasForeignKey(d => d.RuneId);
+
+                entity.HasOne(d => d.Runeword)
+                    .WithMany(p => p.RunewordRunes)
+                    .HasForeignKey(d => d.RunewordId);
+            });
         }
     }
 }
