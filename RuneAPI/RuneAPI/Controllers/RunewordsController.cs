@@ -23,7 +23,10 @@ namespace RuneAPI.Controllers
         [Route("[controller]")]
         public IEnumerable<RunewordDTO> GetAll()
         {
-            return database.Runewords.Select(runeword => new RunewordDTO(runeword)).ToList();
+            return database.Runewords
+                .Include(r => r.RunewordRunes).ThenInclude(r => r.Rune)
+                .Include(r => r.Modifiers)
+                .Select(runeword => new RunewordDTO(runeword)).ToList();
         }
 
         [HttpPost]

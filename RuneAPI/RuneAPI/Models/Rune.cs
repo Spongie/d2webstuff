@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace RuneAPI.Models
 {
@@ -13,7 +14,7 @@ namespace RuneAPI.Models
         public string Name { get; set; }
         public long Number { get; set; }
         public string ImagePath { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<RunewordRune> RunewordRunes { get; set; }
     }
 }
