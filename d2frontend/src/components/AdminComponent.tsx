@@ -3,29 +3,7 @@ import { useState } from "react";
 import { Rune } from "../models/Rune";
 import Httpcommon from "../util/httpcommon";
 import { Runeword, ItemType, Modifier } from "../models/Runeword";
-
-const onRunewordSave = async (name: string, runes: string, modifiers: string, requiredLevel: number, itemTypes: Array<ItemType>) => {
-  let value = 0;
-
-  for (const itemType of itemTypes.filter(x => x.selected)) {
-    value = value | itemType.value;
-  }
-
-  let runeword: Runeword = {
-    id: 0,
-    requiredLevel: requiredLevel,
-    name: name,
-    modifiers: modifiers.split("/\r?\n/").map(m => { return { text: m } as Modifier }),
-    runes: runes.split(' ').map(x => { return { name: x } as Rune }),
-    targetTypes: value
-  };
-
-  const response = await Httpcommon.post('/Runewords', runeword);
-
-  if (response.status !== 200) {
-    console.error(response.statusText);
-  }
-}
+import { ToastContainer, toast } from 'react-toastify';
 
 const AdminComponent: React.FC = () => {
   const [runewordName, setRunewordName] = useState<string>('');
@@ -37,6 +15,33 @@ const AdminComponent: React.FC = () => {
   useEffect(() => {
     fetchItemTypes();
   }, []);
+
+  const onRunewordSave = async (name: string, runes: string, modifiers: string, requiredLevel: number, itemTypes: Array<ItemType>) => {
+    let value = 0;
+
+    for (const itemType of itemTypes.filter(x => x.selected)) {
+      value = value | itemType.value;
+    }
+
+    let runeword: Runeword = {
+      id: 0,
+      requiredLevel: requiredLevel,
+      name: name,
+      modifiers: modifiers.split("/\r?\n/").map(m => { return { text: m } as Modifier }),
+      runes: runes.split(' ').map(x => { return { name: x } as Rune }),
+      targetTypes: value
+    };
+
+    try {
+      const response: Runeword = await Httpcommon.post('/Runewords', runeword);
+      console.log(response);
+      toast('Saved Successfully', { autoClose: 5000, pauseOnHover: true, hideProgressBar: false, type: toast.TYPE.SUCCESS });
+    }
+    catch (error) {
+      console.error(error);
+      toast('Error while saving', { autoClose: 5000, pauseOnHover: true, hideProgressBar: false, type: toast.TYPE.ERROR });
+    }
+  }
 
   const fetchItemTypes = async () => {
     const response = await Httpcommon.get<Array<ItemType>>('/ItemTypes');

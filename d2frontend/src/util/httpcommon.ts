@@ -7,8 +7,6 @@ export default class HttpCommon {
     }
 
     static async post<T>(url: string, data: T) {
-        console.log(JSON.stringify(data));
-
         const response = await fetch(url, {
             method: 'POST',
             headers: {
