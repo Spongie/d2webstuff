@@ -16,7 +16,7 @@ const AdminComponent: React.FC = () => {
     fetchItemTypes();
   }, []);
 
-  const onRunewordSave = async (e: FormEvent<HTMLFormElement>) => {
+  const onRunewordSave = async () => {
     let value = 0;
 
     for (const itemType of runewordItemTypes.filter(x => x.selected)) {
@@ -27,7 +27,7 @@ const AdminComponent: React.FC = () => {
       id: 0,
       requiredLevel: requiredLevel,
       name: runewordName,
-      modifiers: runewordModifiers.split("/\r?\n/").map(m => { return { text: m } as Modifier }),
+      modifiers: runewordModifiers.split("\n").map(m => { return { text: m } as Modifier }),
       runes: runewordRunes.split(' ').map(x => { return { name: x } as Rune }),
       targetTypes: value
     };
@@ -43,8 +43,6 @@ const AdminComponent: React.FC = () => {
       console.error(error);
       toast('Error while saving', { autoClose: 5000, pauseOnHover: true, hideProgressBar: false, type: toast.TYPE.ERROR });
     }
-
-    e.preventDefault();
   }
 
   const fetchItemTypes = async () => {
@@ -78,39 +76,37 @@ const AdminComponent: React.FC = () => {
 
         </div>
         <div className="col-4">
-          <form onSubmit={onRunewordSave}>
-            <div className="form-group">
-              <div className="mb-3">
-                <label htmlFor="runeword_name" className="form-label ">Name</label>
-                <input type="text" id="runeword_name" className="form-control" value={runewordName} onChange={e => { setRunewordName(e.target.value) }} />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="runeword_runes" className="form-label">Runes</label>
-                <input type="text" id="runeword_runes" className="form-control" value={runewordRunes} onChange={e => { setRunewordRunes(e.target.value) }} />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="runeword_level" className="form-label">Required Level</label>
-                <input type="number" id="runeword_level" className="form-control" value={requiredLevel} onChange={e => { setRequiredLevel(parseInt(e.target.value)) }} />
-              </div>
-              <div className="mb-3">
-                {
-                  runewordItemTypes.map((itemType, index) => {
-                    return <div className="form-check form-check-inline" key={'ItemTypeRadioKey_' + itemType.value}>
-                      <input className="form-check-input" type="checkbox" value="" id={'ItemTypeRadio_' + index} checked={itemType.selected} onChange={onItemTypeCheckboxChanged} />
-                      <label className="form-check-label" htmlFor={'ItemTypeRadio_' + index}>{itemType.name}</label>
-                    </div>
-                  })
-                }
-              </div>
-              <div className="mb-3">
-                <label htmlFor="runeword_modifiers" className="form-label">Modifiers</label>
-                <textarea id="runeword_modifiers" className="form-control" rows={12} value={runewordModifiers} onChange={e => { setRunewordModifiers(e.target.value) }} />
-              </div>
-              <div className="col-12">
-                <button className="btn btn-primary">Save</button>
-              </div>
+          <div className="form-group">
+            <div className="mb-3">
+              <label htmlFor="runeword_name" className="form-label ">Name</label>
+              <input type="text" id="runeword_name" className="form-control" value={runewordName} onChange={e => { setRunewordName(e.target.value) }} />
             </div>
-          </form>
+            <div className="mb-3">
+              <label htmlFor="runeword_runes" className="form-label">Runes</label>
+              <input type="text" id="runeword_runes" className="form-control" value={runewordRunes} onChange={e => { setRunewordRunes(e.target.value) }} />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="runeword_level" className="form-label">Required Level</label>
+              <input type="number" id="runeword_level" className="form-control" value={requiredLevel} onChange={e => { setRequiredLevel(parseInt(e.target.value)) }} />
+            </div>
+            <div className="mb-3">
+              {
+                runewordItemTypes.map((itemType, index) => {
+                  return <div className="form-check form-check-inline" key={'ItemTypeRadioKey_' + itemType.value}>
+                    <input className="form-check-input" type="checkbox" value="" id={'ItemTypeRadio_' + index} checked={itemType.selected} onChange={onItemTypeCheckboxChanged} />
+                    <label className="form-check-label" htmlFor={'ItemTypeRadio_' + index}>{itemType.name}</label>
+                  </div>
+                })
+              }
+            </div>
+            <div className="mb-3">
+              <label htmlFor="runeword_modifiers" className="form-label">Modifiers</label>
+              <textarea id="runeword_modifiers" className="form-control" rows={12} value={runewordModifiers} onChange={e => { setRunewordModifiers(e.target.value) }} />
+            </div>
+            <div className="col-12">
+              <button className="btn btn-primary" type="button" onClick={() => { onRunewordSave() }}>Save</button>
+            </div>
+          </div>
         </div>
         <div className="col-4">
 
