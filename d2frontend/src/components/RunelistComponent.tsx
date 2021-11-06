@@ -4,7 +4,8 @@ import { Rune } from "../models/Rune";
 import Httpcommon from "../util/httpcommon";
 
 interface RunelistProps {
-    chunksize: number
+    chunksize: number,
+    onSelectedRuneChanged: (selectedRunes: Array<Rune>) => void
 }
 
 const RunelistComponent: React.FC<RunelistProps> = (props: RunelistProps) => {
@@ -17,6 +18,10 @@ const RunelistComponent: React.FC<RunelistProps> = (props: RunelistProps) => {
     const fetchRunes = async () => {
         const response = await Httpcommon.get<Array<Rune>>('Runes');
 
+        for (let rune of response) {
+            rune.selected = false;
+        }
+
         setRunes(response);
     }
 
@@ -27,6 +32,26 @@ const RunelistComponent: React.FC<RunelistProps> = (props: RunelistProps) => {
         chunks.push(chunk);
     }
 
+    const onRuneClick = (runeId: number) => {
+        const runeIndex = runes.findIndex((rune) => rune.id === runeId);
+
+        if (runeIndex === -1) {
+            return;
+        }
+
+        setRunes(runes.map((rune, index) => {
+            if (index === runeIndex) {
+                rune.selected = !rune.selected;
+            }
+            return rune;
+        }));
+
+        if (props.onSelectedRuneChanged !== undefined) {
+            props.onSelectedRuneChanged(runes.filter((rune) => rune.selected));
+        }
+
+    }
+
     return (
         <div>
             {
@@ -35,9 +60,10 @@ const RunelistComponent: React.FC<RunelistProps> = (props: RunelistProps) => {
                     return <div className="row" key={'runeRow_' + rowIndex}>
                         {
                             chunks[rowIndex].map((rune, runeIndex) => {
-                                const imageSource = 'http://localhost:5000/' + rune.imagePath;
-                                return <div className="col" key={runeIndex}>
-                                    <img src={imageSource} width="64" height="64" alt={rune.name} />
+                                const color = rune.selected ? 'bg-success' : '';
+
+                                return <div className="col text-center" key={runeIndex} onClick={() => { onRuneClick(rune.id) }}>
+                                    <img src={rune.imagePath} className={color} width="64" height="64" alt={rune.name} />
                                     <h2>{rune.name}</h2>
                                 </div>
                             })

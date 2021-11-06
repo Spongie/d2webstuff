@@ -63,29 +63,34 @@ namespace RuneAPI.Controllers
 
         [HttpGet]
         [Route("[controller]/search")]
-        public IEnumerable<Runeword> Search(string runeNumbers)
+        public IEnumerable<RunewordDTO> Search(string runeNumbers)
         {
-            var runes = runeNumbers.Split(",").Select(x => int.Parse(x)).ToHashSet();
-            var matchingRunewords = new List<Runeword>();
-
-            foreach (var runeword in database.Runewords)
+            if (string.IsNullOrEmpty(runeNumbers))
             {
-                //int hits = 0;
+                return Array.Empty<RunewordDTO>();
+            }
 
-                //foreach (var rune in runeword.Runes.Select(r => r.Number).ToArray())
-                //{
-                //    if (!runes.Contains(rune))
-                //    {
-                //        break;
-                //    }
+            var runes = runeNumbers.Split(",").Select(x => long.Parse(x)).ToHashSet();
+            var matchingRunewords = new List<RunewordDTO>();
 
-                //    hits++;
-                //}
+            foreach (var runeword in database.Runewords.Include(r => r.RunewordRunes).ThenInclude(r => r.Rune).Include(r => r.Modifiers))
+            {
+                int hits = 0;
 
-                //if (hits == runeword.Runes.Count)
-                //{
-                //    matchingRunewords.Add(runeword);
-                //}
+                foreach (var rune in runeword.RunewordRunes.Select(r => r.Rune.Number).ToArray())
+                {
+                    if (!runes.Contains(rune))
+                    {
+                        break;
+                    }
+
+                    hits++;
+                }
+
+                if (hits == runeword.RunewordRunes.Count)
+                {
+                    matchingRunewords.Add(new RunewordDTO(runeword));
+                }
             }
 
             return matchingRunewords;

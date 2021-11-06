@@ -1,18 +1,16 @@
 
-import RuneFileViewer from './components/RuneFileViewer';
 import AdminComponent from './components/AdminComponent';
-import React from 'react';
 import { Route } from "react-router";
 import { ROUTE } from './models/Routes';
-import RunewordComponent from './components/RunewordComponent';
+import RunewordSerchComponent from './components/RunewordSerchComponent';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <div>
-      <Route path={ROUTE.HOME}>
-        <RunewordComponent />
+      <Route exact path={ROUTE.HOME}>
+        <RunewordSerchComponent />
       </Route>
       <Route path={ROUTE.ADMIN}>
         <AdminComponent />

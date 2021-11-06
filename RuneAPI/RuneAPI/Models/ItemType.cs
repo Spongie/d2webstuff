@@ -19,6 +19,8 @@ namespace RuneAPI.Models
         Polearm,
         RangedWeapon,
         Claws,
-        BodyArmor
+        BodyArmor,
+        PaladinShield,
+        Helmet
     }
 }
