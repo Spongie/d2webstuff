@@ -36,7 +36,8 @@ namespace RuneAPI.Controllers
             var runeword = new Runeword
             {
                 Name = createData.Name,
-                TargetTypes = createData.TargetTypes
+                TargetTypes = createData.TargetTypes,
+                RequiredLevel = createData.RequiredLevel
             };
                 
             database.Runewords.Add(runeword);
