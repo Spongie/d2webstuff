@@ -18,15 +18,22 @@ function RunewordSerchComponent() {
   return (
     <div className="container-fluid">
       <div className="row">
-        <div className="col-2 border-end border-2">
-          <RunelistComponent chunksize={3} onSelectedRuneChanged={onRunesChanged} />
-        </div>
-        <div className="col-10">
-          {
-            runewords.map((runeword) => {
-              return <RunewordComponent runeword={runeword} />
-            })
-          }
+        <div className="row">
+          <div className="col-2 border-end border-2">
+            <RunelistComponent chunksize={3} onSelectedRuneChanged={onRunesChanged} />
+          </div>
+
+          <div className="col-10">
+            <div className="row">
+              {
+                runewords.map((runeword) => {
+                  return <div className="col-3" key={'runeword_' + runeword.id}>
+                    <RunewordComponent runeword={runeword} />
+                  </div>
+                })
+              }
+            </div>
+          </div>
         </div>
       </div>
     </div>

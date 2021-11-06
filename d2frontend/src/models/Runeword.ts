@@ -2,7 +2,8 @@ import { Rune } from "./Rune";
 
 export type Modifier = {
     id: number,
-    text: string
+    text: string,
+    runewordId: number
 }
 
 export type Runeword = {
