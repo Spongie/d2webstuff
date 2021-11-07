@@ -18,7 +18,15 @@ namespace RuneAPI.Database
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite("DataSource=runes.db;");
+                string dbName = "runes.db";
+                var dbEnvironment = Environment.GetEnvironmentVariable("RUNE_DB_PATH");
+
+                if (!string.IsNullOrEmpty(dbEnvironment))
+                {
+                    dbName = dbEnvironment;
+                }
+
+                optionsBuilder.UseSqlite($"DataSource={dbName};");
             }
         }
 

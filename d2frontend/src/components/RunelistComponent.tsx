@@ -16,7 +16,7 @@ const RunelistComponent: React.FC<RunelistProps> = (props: RunelistProps) => {
     }, []);
 
     const fetchRunes = async () => {
-        const response = await Httpcommon.get<Array<Rune>>('Runes');
+        const response = await Httpcommon.get<Array<Rune>>('/Runes');
 
         for (let rune of response) {
             rune.selected = false;
