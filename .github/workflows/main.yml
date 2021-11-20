@@ -26,7 +26,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build RuneAPI
         run: |
-          docker build -t spongie/d2runeapi:latest ./RuneAPI
+          docker build -f ./RuneAPI/RuneAPI/Dockerfile -t spongie/d2runeapi:latest ./RuneAPI
       - name: Build Frontend
         run: |
-          docker build -t spongie/d2frontend:latest ./d2frontend
+          docker build -f ./d2frontend/Dockerfile -t spongie/d2frontend:latest ./d2frontend
