@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Rune } from "../models/Rune";
-import Httpcommon from "../util/httpcommon";
+import Httpcommon from "../util/Httpcommon";
 import { Runeword, ItemType, Modifier } from "../models/Runeword";
 import { toast } from 'react-toastify';
 
@@ -22,6 +22,7 @@ const AdminComponent: React.FC = () => {
     for (const itemType of runewordItemTypes.filter(x => x.selected)) {
       value = value | itemType.value;
     }
+
 
     let runeword: Runeword = {
       id: 0,

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Rune } from "../models/Rune";
 import { Runeword } from "../models/Runeword";
-import HttpCommon from "../util/httpcommon";
+import HttpCommon from "../util/Httpcommon";
 import RunelistComponent from "./RunelistComponent";
 import RunewordComponent from "./RunewordComponent";
 
