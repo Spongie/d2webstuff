@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Rune } from "../models/Rune";
-import HttpCommon from "../util/Httpcommon";
+import HttpCommon from "../util/HttpCommon";
 
 interface RunelistProps {
     chunksize: number,

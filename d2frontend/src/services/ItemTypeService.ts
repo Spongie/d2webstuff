@@ -1,5 +1,5 @@
 import { ItemType } from "../models/Runeword";
-import HttpCommon from "../util/Httpcommon";
+import HttpCommon from "../util/HttpCommon";
 
 export class ItemTypeService {
     private static instance: ItemTypeService;

@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Rune } from "../models/Rune";
-import HttpCommon from "../util/Httpcommon";
+import HttpCommon from "../util/HttpCommon";
 import { Runeword, ItemType, Modifier } from "../models/Runeword";
 import { toast } from 'react-toastify';
+
 
 const AdminComponent: React.FC = () => {
   const [runewordName, setRunewordName] = useState<string>('');
