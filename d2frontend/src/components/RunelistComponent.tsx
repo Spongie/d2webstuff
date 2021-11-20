@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Rune } from "../models/Rune";
-import Httpcommon from "../util/Httpcommon";
+import HttpCommon from "../util/Httpcommon";
 
 interface RunelistProps {
     chunksize: number,
@@ -16,7 +16,7 @@ const RunelistComponent: React.FC<RunelistProps> = (props: RunelistProps) => {
     }, []);
 
     const fetchRunes = async () => {
-        const response = await Httpcommon.get<Array<Rune>>('/Runes');
+        const response = await HttpCommon.get<Array<Rune>>('/Runes');
 
         for (let rune of response) {
             rune.selected = false;

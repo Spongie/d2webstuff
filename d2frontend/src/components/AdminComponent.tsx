@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { Rune } from "../models/Rune";
-import Httpcommon from "../util/Httpcommon";
+import HttpCommon from "../util/Httpcommon";
 import { Runeword, ItemType, Modifier } from "../models/Runeword";
 import { toast } from 'react-toastify';
 
@@ -36,7 +36,7 @@ const AdminComponent: React.FC = () => {
     console.log(runeword);
 
     try {
-      const response: Runeword = await Httpcommon.post('/Runewords', runeword);
+      const response: Runeword = await HttpCommon.post('/Runewords', runeword);
       console.log(response);
       toast('Saved Successfully', { autoClose: 5000, pauseOnHover: true, hideProgressBar: false, type: toast.TYPE.SUCCESS });
     }
@@ -47,7 +47,7 @@ const AdminComponent: React.FC = () => {
   }
 
   const fetchItemTypes = async () => {
-    const response = await Httpcommon.get<Array<ItemType>>('/ItemTypes');
+    const response = await HttpCommon.get<Array<ItemType>>('/ItemTypes');
 
     for (let itemType of response) {
       itemType.selected = false;
