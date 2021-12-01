@@ -51,7 +51,7 @@ services:
       - /var/lib/d2data/appsettings_runeapi.json:appsettings.Production.json
 
   authapi:
-    container_name: backend
+    container_name: authapi
     image: spongie/d2authapi:latest
     networks:
       d2network:
