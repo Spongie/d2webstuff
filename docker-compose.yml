@@ -19,10 +19,9 @@ services:
     image: redis:alpine
     volumes:
       - /var/lib/d2data/redis.conf:/usr/local/etc/redis/redis.conf
-    command:
-      redis-server /usr/local/etc/redis/redis.conf
+    command: redis-server /usr/local/etc/redis/redis.conf
     networks:
-      d2network:
+      d2network: null
     ports:
       - "6379"
 
@@ -47,9 +46,24 @@ services:
       - "80"
     environment:
       - RUNE_DB_PATH=/app/Data/runes.db
-      - REDIS_LOCATION=redis_cache
     volumes:
       - /var/lib/d2data:/app/Data
+      - /var/lib/d2data/appsettings_runeapi.json:appsettings.Production.json
+
+  authapi:
+    container_name: backend
+    image: spongie/d2authapi:latest
+    networks:
+      d2network:
+        aliases:
+          - d2authapi
+    expose:
+      - "80"
+    environment:
+      - AUTH_DB_PATH=/app/Data/auth.db
+    volumes:
+      - /var/lib/d2data:/app/Data
+      - /var/lib/d2data/appsettings_authapi.json:appsettings.Production.json
 
 networks:
-  d2network:
+  d2network: null

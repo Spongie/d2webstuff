@@ -1,10 +1,16 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RuneAPI.Database;
 using RuneAPI.Models;
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace RuneAPI.Controllers
@@ -13,10 +19,12 @@ namespace RuneAPI.Controllers
     public class RunewordsController : ControllerBase
     {
         private readonly RuneDbContext database;
+        private readonly IConnectionMultiplexer redisService;
 
         public RunewordsController(RuneDbContext database)
         {
             this.database = database;
+            //this.redisService = redisService;
         }
 
         [HttpGet]
@@ -31,6 +39,7 @@ namespace RuneAPI.Controllers
 
         [HttpPost]
         [Route("[controller]")]
+        [Authorize]
         public async Task<IActionResult> Create(RunewordDTO createData)
         {
             var runeword = new Runeword
@@ -63,11 +72,20 @@ namespace RuneAPI.Controllers
 
         [HttpGet]
         [Route("[controller]/search")]
-        public IEnumerable<RunewordDTO> Search(string runeNumbers)
+        public async Task<IEnumerable<RunewordDTO>> Search(string runeNumbers)
         {
             if (string.IsNullOrEmpty(runeNumbers))
             {
                 return Array.Empty<RunewordDTO>();
+            }
+
+            var redisDB = redisService.GetDatabase();
+
+            var redisCache = await redisDB.StringGetAsync(new RedisKey(runeNumbers));
+
+            if (redisCache.HasValue)
+            {
+                return JsonSerializer.Deserialize<List<RunewordDTO>>(redisCache.ToString());
             }
 
             var runes = runeNumbers.Split(",").Select(x => long.Parse(x)).ToHashSet();
@@ -92,6 +110,8 @@ namespace RuneAPI.Controllers
                     matchingRunewords.Add(new RunewordDTO(runeword));
                 }
             }
+
+            await redisDB.StringSetAsync(new RedisKey(runeNumbers), new RedisValue(JsonSerializer.Serialize(matchingRunewords)));
 
             return matchingRunewords;
         }
