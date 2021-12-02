@@ -6,10 +6,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<UserDbContext>();
 
-var redisConfig = builder.Configuration.GetSection("Redis");
-var redisConnectionString = $"{redisConfig["Server"]}:{redisConfig["Port"]},password={redisConfig["AccessKey"]},ssl={redisConfig["SSL"]}";
+var redisLocation = Environment.GetEnvironmentVariable("REDIS_LOCATION");
 
-builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+if (string.IsNullOrEmpty(redisLocation))
+{
+    redisLocation = "localhost:6379";
+}
+
+builder.Services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(new ConfigurationOptions
+{
+    EndPoints = { redisLocation }
+}));
 
 var app = builder.Build();
 

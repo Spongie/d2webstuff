@@ -18,20 +18,20 @@ namespace RuneAPI.Controllers
     [ApiController]
     public class RunewordsController : ControllerBase
     {
-        private readonly RuneDbContext database;
-        private readonly IConnectionMultiplexer redisService;
+        private readonly RuneDbContext _database;
+        private readonly IConnectionMultiplexer _redisService;
 
-        public RunewordsController(RuneDbContext database)
+        public RunewordsController(RuneDbContext database, IConnectionMultiplexer redisService)
         {
-            this.database = database;
-            //this.redisService = redisService;
+            this._database = database;
+            this._redisService = redisService;
         }
 
         [HttpGet]
         [Route("[controller]")]
         public IEnumerable<RunewordDTO> GetAll()
         {
-            return database.Runewords
+            return _database.Runewords
                 .Include(r => r.RunewordRunes).ThenInclude(r => r.Rune)
                 .Include(r => r.Modifiers)
                 .Select(runeword => new RunewordDTO(runeword)).ToList();
@@ -49,13 +49,13 @@ namespace RuneAPI.Controllers
                 RequiredLevel = createData.RequiredLevel
             };
                 
-            database.Runewords.Add(runeword);
+            _database.Runewords.Add(runeword);
 
             foreach (var rune in createData.Runes)
             {
                 runeword.RunewordRunes.Add(new RunewordRune
                 {
-                    Rune = database.Runes.First(r => r.Name.ToLower() == rune.Name.Trim().ToLower()),
+                    Rune = _database.Runes.First(r => r.Name.ToLower() == rune.Name.Trim().ToLower()),
                     Runeword = runeword
                 });
             }
@@ -65,7 +65,7 @@ namespace RuneAPI.Controllers
                 runeword.Modifiers.Add(modifier);
             }
 
-            await database.SaveChangesAsync();
+            await _database.SaveChangesAsync();
 
             return Ok(new RunewordDTO(runeword));
         }
@@ -79,7 +79,7 @@ namespace RuneAPI.Controllers
                 return Array.Empty<RunewordDTO>();
             }
 
-            var redisDB = redisService.GetDatabase();
+            var redisDB = _redisService.GetDatabase();
 
             var redisCache = await redisDB.StringGetAsync(new RedisKey(runeNumbers));
 
@@ -91,7 +91,7 @@ namespace RuneAPI.Controllers
             var runes = runeNumbers.Split(",").Select(x => long.Parse(x)).ToHashSet();
             var matchingRunewords = new List<RunewordDTO>();
 
-            foreach (var runeword in database.Runewords.Include(r => r.RunewordRunes).ThenInclude(r => r.Rune).Include(r => r.Modifiers))
+            foreach (var runeword in _database.Runewords.Include(r => r.RunewordRunes).ThenInclude(r => r.Rune).Include(r => r.Modifiers))
             {
                 int hits = 0;
 

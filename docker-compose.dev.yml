@@ -13,13 +13,13 @@ services:
       - frontend
       - backend
     volumes:
-      - /var/lib/d2data/nginx.conf:/etc/nginx/nginx.conf
+      - E:\tmp\nginx.conf:/etc/nginx/nginx.conf
 
   redis_cache:
     container_name: redis_cache
     image: redis:alpine
     volumes:
-      - /var/lib/d2data/redis.conf:/usr/local/etc/redis/redis.conf
+      - E:\tmp\redis.conf:/usr/local/etc/redis/redis.conf
     command: redis-server /usr/local/etc/redis/redis.conf
     networks:
       d2network: null
@@ -51,7 +51,7 @@ services:
       - RUNE_DB_PATH=/app/Data/runes.db
       - REDIS_LOCATION=redis_cache
     volumes:
-      - /var/lib/d2data:/app/Data
+      - E:\tmp\:/app/Data
 
   authapi:
     container_name: authapi
@@ -68,7 +68,7 @@ services:
       - AUTH_DB_PATH=/app/Data/auth.db
       - REDIS_LOCATION=redis_cache
     volumes:
-      - /var/lib/d2data:/app/Data
+      - E:\tmp\:/app/Data
 
 networks:
   d2network: null

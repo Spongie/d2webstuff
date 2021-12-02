@@ -47,10 +47,17 @@ namespace RuneAPI
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RuneAPI", Version = "v1" });
             });
 
-            var redisConfig = Configuration.GetSection("Redis");
-            var redisConnectionString = $"{redisConfig["Server"]}:{redisConfig["Port"]},password={redisConfig["AccessKey"]},ssl={redisConfig["SSL"]}";
+            var redisLocation = Environment.GetEnvironmentVariable("REDIS_LOCATION");
 
-            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(redisConnectionString));
+            if (string.IsNullOrEmpty(redisLocation))
+            {
+                redisLocation = "localhost:6379";
+            }
+
+            services.AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(new ConfigurationOptions
+            {
+                EndPoints = { redisLocation }
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
