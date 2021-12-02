@@ -6,7 +6,7 @@ export default class HttpCommon {
         return data;
     }
 
-    static async post<T>(url: string, data: T) {
+    static async post<T>(url: string, data: unknown): Promise<T> {
         const response = await fetch('/api' + url, {
             method: 'POST',
             headers: {
@@ -16,6 +16,6 @@ export default class HttpCommon {
             body: JSON.stringify(data)
         });
 
-        return await response.json();
+        return await response.json() as T;
     }
 }

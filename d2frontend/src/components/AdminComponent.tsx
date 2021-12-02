@@ -4,9 +4,12 @@ import { Rune } from "../models/Rune";
 import HttpCommon from "../util/HttpCommon";
 import { Runeword, ItemType, Modifier } from "../models/Runeword";
 import { toast } from 'react-toastify';
-
+import { Redirect } from "react-router-dom";
+import { AuthService } from "../services/AuthService";
 
 const AdminComponent: React.FC = () => {
+  const authService = new AuthService();
+
   const [runewordName, setRunewordName] = useState<string>('');
   const [runewordRunes, setRunewordRunes] = useState<string>('');
   const [requiredLevel, setRequiredLevel] = useState<number>(0);
@@ -69,6 +72,10 @@ const AdminComponent: React.FC = () => {
 
       return itemType;
     }));
+  }
+
+  if (!authService.isAuthenticated()) {
+    return <Redirect to="/" />;
   }
 
   return (
