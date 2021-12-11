@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace RuneAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class RunesController : ControllerBase
     {
         private readonly RuneDbContext database;

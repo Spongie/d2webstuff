@@ -28,7 +28,7 @@ namespace RuneAPI.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]")]
+        [Route("api/[controller]")]
         public IEnumerable<RunewordDTO> GetAll()
         {
             return _database.Runewords
@@ -38,7 +38,7 @@ namespace RuneAPI.Controllers
         }
 
         [HttpPost]
-        [Route("[controller]")]
+        [Route("api/[controller]")]
         [Authorize]
         public async Task<IActionResult> Create(RunewordDTO createData)
         {
@@ -71,7 +71,7 @@ namespace RuneAPI.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/search")]
+        [Route("api/[controller]/search")]
         public async Task<IEnumerable<RunewordDTO>> Search(string runeNumbers)
         {
             if (string.IsNullOrEmpty(runeNumbers))

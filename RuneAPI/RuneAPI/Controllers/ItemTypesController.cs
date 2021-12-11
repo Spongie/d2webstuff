@@ -18,7 +18,7 @@ namespace RuneAPI.Controllers
     public class ItemTypesController : ControllerBase
     {
         [HttpGet]
-        [Route("[controller]")]
+        [Route("api/[controller]")]
         public IEnumerable<EnumNameValue> GetAll()
         {
             var result = new List<EnumNameValue>();
