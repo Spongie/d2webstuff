@@ -22,7 +22,28 @@ const RunelistComponent: React.FC<RunelistProps> = (props: RunelistProps) => {
             rune.selected = false;
         }
 
+        const selectedRunesJson = localStorage.getItem('selected-runes');
+        let preSelected = false;
+
+        if (selectedRunesJson != null) {
+            const selectedRunes = JSON.parse(selectedRunesJson) as Array<number>;
+
+            for (const runeNumber of selectedRunes) {
+                for (let rune of response) {
+                    if (rune.number === runeNumber) {
+                        rune.selected = true;
+                        preSelected = true;
+                    }
+                }
+            }
+        }
+
         setRunes(response);
+
+
+        if (preSelected && props.onSelectedRuneChanged !== undefined) {
+            props.onSelectedRuneChanged(response.filter((rune) => rune.selected));
+        }
     }
 
     let chunks: Array<Array<Rune>> = [];
@@ -43,8 +64,12 @@ const RunelistComponent: React.FC<RunelistProps> = (props: RunelistProps) => {
             if (index === runeIndex) {
                 rune.selected = !rune.selected;
             }
+
             return rune;
         }));
+
+        const selectedRunesList: Array<number> = runes.filter((rune) => rune.selected).map((rune) => rune.number);
+        localStorage.setItem('selected-runes', JSON.stringify(selectedRunesList));
 
         if (props.onSelectedRuneChanged !== undefined) {
             props.onSelectedRuneChanged(runes.filter((rune) => rune.selected));
