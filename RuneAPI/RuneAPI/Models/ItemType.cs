@@ -39,6 +39,8 @@ namespace RuneAPI.Models
         [Description("Paladin Shields")]
         PaladinShield = 32768,
         [Description("Helmets")]
-        Helmet = 65536
+        Helmet = 65536,
+        [Description("Daggers")]
+        Dagger = 131072
     }
 }
