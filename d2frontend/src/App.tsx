@@ -4,6 +4,7 @@ import { Route } from "react-router";
 import { ROUTE } from './models/Routes';
 import RunewordSerchComponent from './components/RunewordSerchComponent';
 import { ToastContainer } from 'react-toastify';
+import "./index.css"
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {

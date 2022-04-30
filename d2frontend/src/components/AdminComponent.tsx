@@ -37,8 +37,6 @@ const AdminComponent: React.FC = () => {
       targetTypes: value
     };
 
-    console.log(runeword);
-
     try {
       const response: Runeword = await HttpCommon.post('/Runewords', runeword);
       console.log(response);

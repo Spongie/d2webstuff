@@ -78,21 +78,14 @@ const RunelistComponent: React.FC<RunelistProps> = (props: RunelistProps) => {
     }
 
     return (
-        <div>
+        <div className="row">
             {
-                chunks.map((_, rowIndex) => {
+                runes.map((rune, index) => {
+                    const color = rune.selected ? 'rune-image bg-success' : 'rune-image';
 
-                    return <div className="row" key={'runeRow_' + rowIndex}>
-                        {
-                            chunks[rowIndex].map((rune, runeIndex) => {
-                                const color = rune.selected ? 'bg-success' : '';
-
-                                return <div className="col text-center" key={runeIndex} onClick={() => { onRuneClick(rune.id) }}>
-                                    <img src={rune.imagePath} className={color} width="64" height="64" alt={rune.name} />
-                                    <h2>{rune.name}</h2>
-                                </div>
-                            })
-                        }
+                    return <div className="col text-center" key={index} onClick={() => { onRuneClick(rune.id) }}>
+                        <img src={rune.imagePath} className={color} alt={rune.name} />
+                        <p className="rune-text">{rune.name}</p>
                     </div>
                 })
             }
